@@ -101,6 +101,7 @@ func getImageClientConnection(context *cli.Context) (*grpc.ClientConn, error) {
 
 func getConnection(endPoints []string) (*grpc.ClientConn, error) {
 	if endPoints == nil || len(endPoints) == 0 {
+		/*endPoints为空，获取连接失败*/
 		return nil, fmt.Errorf("endpoint is not set")
 	}
 	endPointsLen := len(endPoints)

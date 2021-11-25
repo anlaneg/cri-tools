@@ -132,6 +132,7 @@ var createContainerCommand = &cli.Command{
 
 	Action: func(context *cli.Context) error {
 		if context.Args().Len() != 3 {
+			/*必须提供3个参数*/
 			return cli.ShowSubcommandHelp(context)
 		}
 		if context.Bool("no-pull") == true && context.Bool("with-pull") == true {
@@ -160,8 +161,8 @@ var createContainerCommand = &cli.Command{
 		opts := createOptions{
 			podID: context.Args().Get(0),
 			runOptions: &runOptions{
-				configPath: context.Args().Get(1),
-				podConfig:  context.Args().Get(2),
+				configPath: context.Args().Get(1),/*配置文件名称*/
+				podConfig:  context.Args().Get(2),/*pod配置文件名称*/
 				pullOptions: &pullOptions{
 					withPull: withPull,
 					creds:    context.String("creds"),
@@ -642,12 +643,14 @@ func CreateContainer(
 	opts createOptions,
 ) (string, error) {
 
+	/*加载container配置文件*/
 	config, err := loadContainerConfig(opts.configPath)
 	if err != nil {
 		return "", err
 	}
 	var podConfig *pb.PodSandboxConfig
 	if opts.podConfig != "" {
+		/*加载pod配置文件*/
 		podConfig, err = loadPodSandboxConfig(opts.podConfig)
 		if err != nil {
 			return "", err
@@ -667,6 +670,7 @@ func CreateContainer(
 
 		// Try to pull the image before container creation
 		image := config.GetImage().GetImage()
+		/*拉取image*/
 		if _, err := PullImageWithSandbox(iClient, image, auth, podConfig); err != nil {
 			return "", err
 		}

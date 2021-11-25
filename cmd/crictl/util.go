@@ -140,6 +140,7 @@ func getSortedKeys(m map[string]string) []string {
 	return keys
 }
 
+/*加载容器配置文件*/
 func loadContainerConfig(path string) (*pb.ContainerConfig, error) {
 	f, err := openFile(path)
 	if err != nil {
@@ -147,6 +148,7 @@ func loadContainerConfig(path string) (*pb.ContainerConfig, error) {
 	}
 	defer f.Close()
 
+	/*配置文件内容解析为config变量*/
 	var config pb.ContainerConfig
 	if err := utilyaml.NewYAMLOrJSONDecoder(f, 4096).Decode(&config); err != nil {
 		return nil, err
@@ -154,6 +156,7 @@ func loadContainerConfig(path string) (*pb.ContainerConfig, error) {
 	return &config, nil
 }
 
+/*加载pod配置文件*/
 func loadPodSandboxConfig(path string) (*pb.PodSandboxConfig, error) {
 	f, err := openFile(path)
 	if err != nil {
